@@ -24,20 +24,6 @@ right_LEDs = [red2, orange2, yellow2, green2, blue2]
 
 hand = '0'
 
-"""
-STEPico LED
-rgb_pin = Pin(23)
-num_leds = 4
-rgb_leds = NeoPixel(rgb_pin, num_leds)
-
-luminance = 8
-
-color = (0,0,0)
-rgb_leds.fill(color)
-rgb_leds.write()
-"""
-
-
 def turn_on_LEDs (LEDs, num_LEDs):
     num_LEDs = int(num_LEDs)
     if num_LEDs == 0:
