@@ -9,7 +9,7 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
 
-port = "/dev/cu.usbmodem101"  # Adjust the port to match your setup
+port = ""  # Adjust the port to match your setup
 baudrate = 115200
 # serial connection to talk to pico
 serial_connection = serial.Serial(port, baudrate)
@@ -27,7 +27,7 @@ def calculate_angle(a, b, c):
     magnitude_bc = math.sqrt(bc[0] ** 2 + bc[1] ** 2)
     
     cos_angle = dot_product / (magnitude_ab * magnitude_bc)
-    angle = math.degrees(math.acos(max(-1.0, min(1.0, cos_angle))))  # 确保cos_angle在[-1, 1]范围内 / Ensure cos_angle is within [-1, 1]
+    angle = math.degrees(math.acos(max(-1.0, min(1.0, cos_angle))))  #  Ensure cos_angle is within [-1, 1]
     return angle
 
 def is_finger_straight(landmarks, finger_tip_index, finger_mcp_index, wrist_index=0):
@@ -44,16 +44,16 @@ def is_finger_straight(landmarks, finger_tip_index, finger_mcp_index, wrist_inde
 def is_finger_bent(landmarks, mcp_index, pip_index, dip_index):
     # Determine if a finger is bent (based on angle)
     angle = calculate_angle(landmarks[mcp_index], landmarks[pip_index], landmarks[dip_index])
-    return angle < 160  # 小于160度认为手指弯曲 / Consider the finger bent if angle is less than 160 degrees
+    return angle < 160  #  Consider the finger bent if angle is less than 160 degrees
 
 def count_fingers(hand_landmarks):
     landmarks = hand_landmarks.landmark
     finger_states = [
-        not is_finger_bent(landmarks, 1, 2, 3) and is_finger_straight(landmarks, 4, 1),  # 拇指 / Thumb
-        not is_finger_bent(landmarks, 5, 6, 7) and is_finger_straight(landmarks, 8, 5),  # 食指 / Index finger
-        not is_finger_bent(landmarks, 9, 10, 11) and is_finger_straight(landmarks, 12, 9),  # 中指 / Middle finger
-        not is_finger_bent(landmarks, 13, 14, 15) and is_finger_straight(landmarks, 16, 13),  # 无名指 / Ring finger
-        not is_finger_bent(landmarks, 17, 18, 19) and is_finger_straight(landmarks, 20, 17)  # 小指 / Pinky
+        not is_finger_bent(landmarks, 1, 2, 3) and is_finger_straight(landmarks, 4, 1),  # Thumb
+        not is_finger_bent(landmarks, 5, 6, 7) and is_finger_straight(landmarks, 8, 5),  # Index finger
+        not is_finger_bent(landmarks, 9, 10, 11) and is_finger_straight(landmarks, 12, 9),  # Middle finger
+        not is_finger_bent(landmarks, 13, 14, 15) and is_finger_straight(landmarks, 16, 13),  # Ring finger
+        not is_finger_bent(landmarks, 17, 18, 19) and is_finger_straight(landmarks, 20, 17)  # Pinky
     ]
     return sum(finger_states), finger_states
 
@@ -111,7 +111,6 @@ with mp_hands.Hands(
             finger_info.append(finger_count)
             total_fingers += finger_count
 
-    # 在终端打印信息
     # Print information in the terminal
     print(f"Hands: {len(finger_info)} | Finger counts: {finger_info} | Total fingers: {total_fingers}")
     
